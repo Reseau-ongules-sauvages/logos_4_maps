@@ -139,4 +139,4 @@ Allez sur la console d'admnistration à l'adresse suivante : http://127.0.0.1
 [^1]: https://computingforgeeks.com/install-redash-data-visualization-dashboard-on-ubuntu/
 
 [^2]: https://fitdevops.in/how-to-setup-redash-dashboard-on-ubuntu/
-[^3]: MAJ v8 vers v10 - Cf. https://github.com/getredash/redash/releases/tag/v10.0.0
+[^3]: https://github.com/getredash/redash/releases/tag/v10.0.0
