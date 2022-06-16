@@ -40,7 +40,7 @@ Start the docker service and check the status of Docker engine.[^2]
     sudo systemctl start docker
     sudo systemctl status docker
 
-We can check the version of docker engine install ed.
+We can check the version of docker engine installed.
 
     sudo docker --version
 
@@ -75,11 +75,11 @@ Make the script executable and run it
     chmod +x setup.sh
     sudo ./setup.sh
 
-The script will:
+The script will :
 
-    Install both Docker and Docker Compose.
-    Download  Docker Compose configuration files and bootstrap Redash environment
-    Start all Redash docker containers
+- Install both Docker and Docker Compose.
+- Download  Docker Compose configuration files and bootstrap Redash environment
+- Start all Redash docker containers
 
 Confirm containers were created and in running status:
 
