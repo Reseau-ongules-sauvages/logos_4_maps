@@ -1,23 +1,16 @@
 ## Installation Redash sur Ubuntu 18.04 & 20.04
 
-From documentation below
-[1] Deuxième partie de l'installation avec le script Redash en ligne : https://computingforgeeks.com/install-redash-data-visualization-dashboard-on-ubuntu/
-[2] https://fitdevops.in/how-to-setup-redash-dashboard-on-ubuntu/
-[3] MAJ v8 vers v10 - Cf. https://github.com/getredash/redash/releases/tag/v10.0.0
-
-[1]
-
-### Setup Environment
+### Setup Environment [^1]
 
 This installation of Redash has the following dependencies
 
-    Installed and running Ubuntu 20.04/18.04 LTS server
-    Docker Engine
-    Docker compose
+- Installed and running Ubuntu 20.04/18.04 LTS server
+- Docker Engine
+- Docker compose
 
 The installation of Redash Data Visualization Dashboard on Ubuntu can be done from a script which automates the process for you, or manual steps.
 
-Step 1: Update Ubuntu system
+#### Step 1: Update Ubuntu system
 
 As a rule of thumb, your system should be updated before installing any packages.
 
@@ -27,7 +20,7 @@ As a rule of thumb, your system should be updated before installing any packages
 
 Once the system is rebooted, proceed to step 2
 
-Step 2: Install Docker and Docker Compose
+#### Step 2: Install Docker and Docker Compose
 
 Run the following commands to install Docker on Ubuntu 20.04/18.04:
 
@@ -42,8 +35,8 @@ Allow the current user to run Docker commands
     sudo usermod -aG docker $USER
     newgrp docker
 
-[2]
-Start the docker service and check the status of Docker engine.
+
+Start the docker service and check the status of Docker engine.[^2]
 
     sudo systemctl start docker
     sudo systemctl status docker
@@ -52,6 +45,7 @@ We can check the version of docker engine install ed.
 
     sudo docker --version
 
+![Version docker chargée](https://fitdevops.in/wp-content/uploads/Screenshot-from-2020-06-02-19-37-06.png)
 Lets install the docker compose on the ubuntu server.
 
     sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
@@ -64,8 +58,8 @@ You can check the version of docker-compose using the below command.
 
     sudo docker-compose --version
 
-[1]
-Prepare environment and install Redash
+
+#### Prepare environment and install Redash[^1]
 
 You can perform the installation automatically via a bash setup script or manually step-by-step.
 Let’s consider both applicable methods:
@@ -97,36 +91,50 @@ Once Redash is installed, the service will be available on your server IP or DNS
 
     in this case, the default localhost : http://127.0.0.1
 
-[3] MAJ v8 vers v10
+MAJ v8 vers v10[^3]
 
 These steps are performed on the server that runs Docker.
 
-1/ Make sure to backup your data. You only need to backup Redash’s PostgreSQL database (the database Redash stores metadata in, not the ones you might be querying) as the data in Redis is transient.
+1. Make sure to backup your data. You only need to backup Redash’s PostgreSQL database (the database Redash stores metadata in, not the ones you might be querying) as the data in Redis is transient.
 Note: If you just deployed a Redash V8 AMI and have not used it, you can skip this step.2/
-2/ Open a terminal
-cd /opt/redash
-3/ Update opt/redash/docker-compose.yml to reference the docker image you want to upgrade to: redash/redash:10.0.0.b50363
-4/ Under services.scheduler.environment omit QUEUES and WORKERS_COUNT and omit environment altogether if it is empty.
-5/ Under services, add a new service for general RQ jobs:
-worker:
-<<: \*redash-service
-command: worker
-environment:
-QUEUES: "periodic emails default"
-WORKERS_COUNT: 1
-6/ Stop Redash services:
-docker-compose stop server scheduler scheduled_worker adhoc_worker
-(you might need to list additional services if you defined them in your docker-compose.yml previously)
-7/ Force a recreation of your containers with
-docker-compose up --force-recreate --build
+2. Open a terminal
+
+        cd /opt/redash
+3. Update opt/redash/docker-compose.yml to reference the docker image you want to upgrade to: redash/redash:10.0.0.b50363
+4. Under `services.scheduler.environment` omit `QUEUES` and `WORKERS_COUNT` and omit environment altogether if it is empty.
+5. Under `services`, add a new service for general RQ jobs:
+
+        worker:
+            <<: \*redash-service
+            command: worker
+            environment:
+                QUEUES: "periodic emails default"
+                WORKERS_COUNT: 1
+6. Stop Redash services:
+
+        docker-compose stop server scheduler scheduled_worker adhoc_worker
+    (you might need to list additional services if you defined them in your docker-compose.yml previously)
+7. Force a recreation of your containers with
+
+        docker-compose up --force-recreate --build
 Le service va tourner en boucle en indiquant des erreurs au bout d'un moement.
 Du coup il faut le stopper en faisant
-Ctrl+c
-8/ Run the necessary migrations with
-docker-compose run --rm server manage db upgrade
-9/ Restart the containers
-docker-compose up -d
+
+        Ctrl+c
+8. Run the necessary migrations with
+
+        docker-compose run --rm server manage db upgrade
+9. Restart the containers
+
+    	docker-compose up -d
 
 Et voilà, ça marche !!
 
 Allez sur la console d'admnistration à l'adresse suivante : http://127.0.0.1
+
+
+
+[^1]: https://computingforgeeks.com/install-redash-data-visualization-dashboard-on-ubuntu/
+
+[^2]: https://fitdevops.in/how-to-setup-redash-dashboard-on-ubuntu/
+[^3]: MAJ v8 vers v10 - Cf. https://github.com/getredash/redash/releases/tag/v10.0.0
