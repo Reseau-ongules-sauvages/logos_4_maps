@@ -100,9 +100,9 @@ These steps are performed on the server that runs Docker.
 2. Open a terminal
 
         cd /opt/redash
-4. Update `opt/redash/docker-compose.yml` to reference the docker image you want to upgrade to: `redash/redash:10.0.0.b50363`
+4. Update `opt/redash/docker-compose.yml` to reference the docker image you want to upgrade to: `redash/redash:10.0.0.b50363`. For instance,
 
-        sudo vim docker-compose.yml
+        sudo gedit docker-compose.yml
 5. Under `services.scheduler.environment` omit `QUEUES` and `WORKERS_COUNT` and omit environment altogether if it is empty.
 6. Under `services`, add a new service for general RQ jobs:
 
