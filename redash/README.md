@@ -98,11 +98,11 @@ These steps are performed on the server that runs Docker.
 1. Make sure to backup your data. You only need to backup Redash’s PostgreSQL database (the database Redash stores metadata in, not the ones you might be querying) as the data in Redis is transient.
 Note: If you just deployed a Redash V8 AMI and have not used it, you can skip this step.2/
 2. Open a terminal
-
-        cd /opt/redash
 3. Update `opt/redash/docker-compose.yml` to reference the docker image you want to upgrade to: `redash/redash:10.0.0.b50363`
-4. Under `services.scheduler.environment` omit `QUEUES` and `WORKERS_COUNT` and omit environment altogether if it is empty.
-5. Under `services`, add a new service for general RQ jobs:
+
+        sudo gedit /opt/redash/docker-compose.yml
+5. Under `services.scheduler.environment` omit `QUEUES` and `WORKERS_COUNT` and omit environment altogether if it is empty.
+6. Under `services`, add a new service for general RQ jobs:
 
         worker:
             <<: \*redash-service
