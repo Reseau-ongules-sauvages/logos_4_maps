@@ -89,7 +89,7 @@ Access Redash Dashboard
 
 Once Redash is installed, the service will be available on your server IP or DNS name assigned. Point your browser to the server address to access it.
 
-    in this case, the default localhost : http://127.0.0.1
+in this case, the default localhost : http://127.0.0.1
 
 ### Step 4 : MAJ v8 vers v10[^3]
 
