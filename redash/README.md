@@ -100,7 +100,7 @@ Note: If you just deployed a Redash V8 AMI and have not used it, you can skip th
 2. Open a terminal
 
         cd /opt/redash
-3. Update opt/redash/docker-compose.yml to reference the docker image you want to upgrade to: redash/redash:10.0.0.b50363
+3. Update `opt/redash/docker-compose.yml` to reference the docker image you want to upgrade to: `redash/redash:10.0.0.b50363`
 4. Under `services.scheduler.environment` omit `QUEUES` and `WORKERS_COUNT` and omit environment altogether if it is empty.
 5. Under `services`, add a new service for general RQ jobs:
 
