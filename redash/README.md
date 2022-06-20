@@ -1,5 +1,11 @@
 ## Installation Redash sur Ubuntu 18.04 & 20.04
 
+![Redash](https://raw.githubusercontent.com/ofbwebmaps/logos_4_maps/main/redash/images/redash.png)
+
+<img src="https://raw.githubusercontent.com/ofbwebmaps/logos_4_maps/main/redash/images/redash.png"  width=50% >
+
+#### [Tuto d'installation](https://github.com/ofbwebmaps/logos_4_maps/blob/main/redash/tuto-instal-redash.md) d'une instance [Redash](https://redash.io/) sur une machine Ubuntu LTS 18.04 et 20.04.
+
 ### Setup Environment [^1]
 
 This installation of Redash has the following dependencies
@@ -58,7 +64,6 @@ You can check the version of docker-compose using the below command.
 
     sudo docker-compose --version
 
-
 ### Step 3 : Prepare environment and install Redash[^1]
 
 You can perform the installation automatically via a bash setup script or manually step-by-step.
@@ -78,7 +83,7 @@ Make the script executable and run it
 The script will :
 
 - Install both Docker and Docker Compose.
-- Download  Docker Compose configuration files and bootstrap Redash environment
+- Download Docker Compose configuration files and bootstrap Redash environment
 - Start all Redash docker containers
 
 Confirm containers were created and in running status:
@@ -95,16 +100,18 @@ in this case, the default localhost : http://127.0.0.1
 
 These steps are performed on the server that runs Docker.
 
-1. Make sure to backup your data. You only need to backup Redash’s PostgreSQL database (the database Redash stores metadata in, not the ones you might be querying) as the data in Redis is transient.
-> **Note :** If you just deployed a Redash V8 AMI and have not used it, you can skip this step 2
-2. Open a terminal
+1.  Make sure to backup your data. You only need to backup Redash’s PostgreSQL database (the database Redash stores metadata in, not the ones you might be querying) as the data in Redis is transient.
+    > **Note :** If you just deployed a Redash V8 AMI and have not used it, you can skip this step 2
+2.  Open a terminal
 
         cd /opt/redash
-4. Update `opt/redash/docker-compose.yml` to reference the docker image you want to upgrade to: `redash/redash:10.0.0.b50363`. For instance,
+
+3.  Update `opt/redash/docker-compose.yml` to reference the docker image you want to upgrade to: `redash/redash:10.0.0.b50363`. For instance,
 
         sudo gedit docker-compose.yml
-5. Under `services.scheduler.environment` omit `QUEUES` and `WORKERS_COUNT` and omit environment altogether if it is empty.
-6. Under `services`, add a new service for general RQ jobs:
+
+4.  Under `services.scheduler.environment` omit `QUEUES` and `WORKERS_COUNT` and omit environment altogether if it is empty.
+5.  Under `services`, add a new service for general RQ jobs:
 
         worker:
             <<: \*redash-service
@@ -112,33 +119,36 @@ These steps are performed on the server that runs Docker.
             environment:
                 QUEUES: "periodic emails default"
                 WORKERS_COUNT: 1
+
     ![Version docker chargée](https://user-images.githubusercontent.com/17067911/142930697-ed7d2881-ca3f-4449-a096-b906f1d983c8.png)
 
-6. Stop Redash services:
+6.  Stop Redash services:
 
         docker-compose stop server scheduler scheduled_worker adhoc_worker
+
     (you might need to list additional services if you defined them in your docker-compose.yml previously)
-7. Force a recreation of your containers with
 
-        docker-compose up --force-recreate --build
-Le service va tourner en boucle en indiquant des erreurs au bout d'un moment.
-Du coup il faut le stopper en faisant
+7.  Force a recreation of your containers with
 
-        Ctrl+C
-8. Run the necessary migrations with
+            docker-compose up --force-recreate --build
+
+    Le service va tourner en boucle en indiquant des erreurs au bout d'un moment.
+    Du coup il faut le stopper en faisant
+
+            Ctrl+C
+
+8.  Run the necessary migrations with
 
         docker-compose run --rm server manage db upgrade
-9. Restart the containers
 
-    	docker-compose up -d
+9.  Restart the containers
+
+        docker-compose up -d
 
 Et voilà, ça marche !!
 
 Allez sur la console d'admnistration à l'adresse suivante : http://127.0.0.1
 
-
-
 [^1]: https://computingforgeeks.com/install-redash-data-visualization-dashboard-on-ubuntu/
-
 [^2]: https://fitdevops.in/how-to-setup-redash-dashboard-on-ubuntu/
 [^3]: https://github.com/getredash/redash/releases/tag/v10.0.0
